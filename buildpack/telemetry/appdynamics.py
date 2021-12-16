@@ -1,5 +1,6 @@
 import logging
 import os
+import subprocess
 
 from buildpack import util
 
@@ -19,11 +20,21 @@ def stage(buildpack_dir, destination_path, cache_path):
             cache_dir=cache_path,  # CACHE_DIR,
         )
 
+        # Remove the JndiLookup class from classpath to mitigate CVE-2021-45046
+        cmd = [
+            "zip",
+            "-d",
+            os.path.abspath(destination_path + "/ver" + APPDYNAMICS_VERSION + "/lib/tp/log4j-core-*.jar"),
+            "org/apache/logging/log4j/core/lookup/JndiLookup.class"
+        ]
+        logging.info("Executing %s" % str(cmd))
+        subprocess.check_call(cmd)
 
 def update_config(m2ee, app_name):
     if not appdynamics_used():
         return
     logging.info("Adding app dynamics")
+
     util.upsert_javaopts(
         m2ee,
         [
@@ -49,7 +60,6 @@ def update_config(m2ee, app_name):
                 os.getenv("CF_INSTANCE_INDEX", "0"),
             ),
         )
-
 
 def appdynamics_used():
     for key, _ in os.environ.items():
