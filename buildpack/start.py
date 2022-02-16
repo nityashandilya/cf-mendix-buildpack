@@ -20,6 +20,7 @@ from buildpack.telemetry import (
     mx_java_agent,
     newrelic,
     telegraf,
+    opentelemetry,
 )
 
 
@@ -136,6 +137,9 @@ if __name__ == "__main__":
         appdynamics.update_config(
             m2ee, util.get_vcap_data()["application_name"]
         )
+        opentelemetry.update_config(
+            m2ee, util.get_vcap_data()["application_name"]
+        )
         dynatrace.update_config(m2ee, util.get_vcap_data()["application_name"])
         mx_java_agent.update_config(m2ee)
         telegraf.update_config(m2ee, util.get_vcap_data()["application_name"])
@@ -159,6 +163,7 @@ if __name__ == "__main__":
         )
 
         # Start components and runtime
+        opentelemetry.run()
         telegraf.run(runtime_version)
         datadog.run(model_version, runtime_version)
         metering.run()

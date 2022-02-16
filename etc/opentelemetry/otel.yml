@@ -1,0 +1,30 @@
+processors:
+  resource:
+    attributes:
+    - key: appdynamics.controller.account
+      action: upsert
+      value: "gandhi202202080417139"
+    - key: appdynamics.controller.host
+      action: upsert
+      value: "gandhi202202080417139.saas.appdynamics.com"
+    - key: appdynamics.controller.port
+      action: upsert
+      value: 443
+  batch:
+    timeout: 30s
+    send_batch_size: 8192
+receivers:
+  otlp:
+    protocols:
+      grpc:
+      http:
+exporters:
+  otlphttp:
+    endpoint: "https://fra-sls-agent-api.saas.appdynamics.com"
+    headers: {"x-api-key": ""}
+service:
+  pipelines:
+    traces:
+      receivers: [otlp]
+      processors: [resource, batch]
+      exporters: [otlphttp]
