@@ -41,7 +41,13 @@ pyyaml==5.4.1
     #   -r requirements.in
     #   omegaconf
 requests==2.26.0
+    # via
+    #   -r requirements.in
+    #   requests-mock
+requests-mock==1.9.3
     # via -r requirements.in
+six==1.16.0
+    # via requests-mock
 urllib3==1.26.6
     # via
     #   -r requirements.in

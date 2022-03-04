@@ -172,6 +172,7 @@ if __name__ == "__main__":
         )
 
         # Start components and runtime
+        appdynamics.run()
         telegraf.run(runtime_version)
         datadog.run(model_version, runtime_version)
         metering.run()

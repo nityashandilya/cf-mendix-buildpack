@@ -16,6 +16,7 @@ class TestCaseDeployWithAppdynamics(basetest.BaseTest):
                 "APPDYNAMICS_CONTROLLER_HOST_NAME": "test.mendix.com",
                 "APPDYNAMICS_CONTROLLER_PORT": 443,
                 "APPDYNAMICS_CONTROLLER_SSL_ENABLED": "true",
+                "APPDYNAMICS_MACHINE_AGENT_ENABLED": "true",
             },
         )
         self.start_container()
@@ -28,6 +29,11 @@ class TestCaseDeployWithAppdynamics(basetest.BaseTest):
         output = self.run_on_container("ps -ef| grep javaagent")
         assert output is not None
         assert str(output).find(APPDYNAMICS_VERSION) >= 0
+
+        # check if machine agent is running
+        output = self.run_on_container("ps -ef | grep machineagent")
+        assert output is not None
+        assert str(output).find("Dmetric.http.listener=true") >= 0
 
     def _test_appdynamics(self, mda_file):
         self._test_appdynamics_running(mda_file)
