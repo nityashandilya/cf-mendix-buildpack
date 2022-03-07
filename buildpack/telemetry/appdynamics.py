@@ -21,7 +21,7 @@ def stage(buildpack_dir, destination_path, cache_path):
 
         util.resolve_dependency(
             util.get_blobstore_url(
-                "/mx-buildpack/appdynamics/appdynamics-machine-agent-22.2.0.3282.zip"
+                "/mx-buildpack/appdynamics/appdynamics-machineagent-bundle-22.2.0.3282.zip"
             ),
             destination_path + "/machineagent/",  # DOT_LOCAL_LOCATION,
             buildpack_dir=buildpack_dir,
