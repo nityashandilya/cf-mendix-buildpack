@@ -336,4 +336,7 @@
 ####################################################################################
 {% endif %}
 
-[[processors.printer]]
+[[outputs.file]]
+  files = ["stdout", "/tmp/metrics.out"]
+  data_format = "influx"
+
