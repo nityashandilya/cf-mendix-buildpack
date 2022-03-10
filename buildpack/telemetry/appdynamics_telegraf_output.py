@@ -22,10 +22,15 @@ def convert_payload():
 
     for metric in metrics_list:
 
+        value = -10101
+        fields = metric.get("fields")
+        if fields:
+            value = fields.get("value")
+
         appd_metric = {
             "metricName": "|".join((METRIC_TREE_PATH, metric["name"])),
             "aggregatorType": AGGR_TYPE,
-            "value": metric["fields"]["value"]
+            "value": value
         }
 
         appdynamics_payload.append(appd_metric)
