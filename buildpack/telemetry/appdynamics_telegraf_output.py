@@ -23,9 +23,9 @@ def convert_payload():
     for metric in metrics_list:
 
         appd_metric = {
-            "metricName": "|".join((METRIC_TREE_PATH, metric["name"])),
+         #   "metricName": "|".join((METRIC_TREE_PATH, metric["name"])),
             "aggregatorType": AGGR_TYPE,
-            "value": int(metric["fields"]["value"])
+         #   "value": int(metric["fields"]["value"])
         }
 
         appdynamics_payload.append(appd_metric)
