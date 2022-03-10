@@ -23,12 +23,12 @@ def convert_payload():
     for metric in metrics_list:
 
         appd_metric = {
-         #   "metricName": "|".join((METRIC_TREE_PATH, metric["name"])),
+            "metricName": "|".join((METRIC_TREE_PATH, metric["name"])),
             "aggregatorType": AGGR_TYPE,
          #   "value": int(metric["fields"]["value"])
         }
 
-        appdynamics_payload.append(metric)
+        appdynamics_payload.append(appd_metric)
 
     with open("/tmp/out.txt", "w") as f:
 
