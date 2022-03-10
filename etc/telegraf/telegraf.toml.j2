@@ -336,6 +336,6 @@
 ####################################################################################
 {% endif %}
 
-#[[outputs.exec]]
- # command = ["python3", "/home/vcap/app/buildpack/telemetry/appdynamics_telegraf_output.py"]
- # data_format = "json"
+[[outputs.exec]]
+  command = ["python3", "/home/vcap/app/buildpack/telemetry/appdynamics_telegraf_output.py"]
+  data_format = "json"
