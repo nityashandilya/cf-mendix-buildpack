@@ -22,7 +22,7 @@ def convert_payload():
     for metric in metrics_list:
 
         appd_metric = {
-            "metricName": "|".join(METRIC_TREE_PATH, matric["name"]),
+            "metricName": "|".join((METRIC_TREE_PATH, matric["name"])),
             "aggregatorType": AGGR_TYPE,
             "value": int(metric["fields"]["value"])
         }
