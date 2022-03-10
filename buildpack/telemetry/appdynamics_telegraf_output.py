@@ -28,7 +28,7 @@ def convert_payload():
          #   "value": int(metric["fields"]["value"])
         }
 
-        appdynamics_payload.append(appd_metric)
+        appdynamics_payload.append(metric)
 
     with open("/tmp/out.txt", "w") as f:
 
