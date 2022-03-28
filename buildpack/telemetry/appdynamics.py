@@ -42,7 +42,6 @@ APPD_DEFAULT_ENV_VARS = {
 def _set_default_env(m2ee):
     for var_name, value in APPD_DEFAULT_ENV_VARS.items():
         util.upsert_custom_environment_variable(m2ee, var_name, value)
-        os.environ[var_name] = value
 
 
 def stage(buildpack_dir, destination_path, cache_path):
@@ -90,7 +89,19 @@ def update_config(m2ee, app_name):
         ],
     )
 
-    _set_default_env(m2ee)
+  #  _set_default_env(m2ee)
+
+    APPDYNAMICS_AGENT_NODE_NAME = "APPDYNAMICS_AGENT_NODE_NAME"
+    if os.getenv(APPDYNAMICS_AGENT_NODE_NAME):
+        util.upsert_custom_environment_variable(
+            m2ee,
+            APPDYNAMICS_AGENT_NODE_NAME,
+            "%s-%s"
+            % (
+                os.getenv(APPDYNAMICS_AGENT_NODE_NAME),
+                os.getenv("CF_INSTANCE_INDEX", "0"),
+            ),
+        )
 
 
 def run():
@@ -103,8 +114,6 @@ def run():
         (AGENT_PATH, "-Dmetric.http.listener=true"),
         env=env_dict,
     )
-
-    logging.info(f"Machine Agent envs: {env_dict}")
 
 
 def appdynamics_used():
