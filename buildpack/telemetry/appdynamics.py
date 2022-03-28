@@ -12,7 +12,7 @@ AGENT_PATH = os.path.join(
 )
 
 APPD_NODE_NUMBER = os.getenv("CF_INSTANCE_INDEX", default=0)
-APPD_TIER = util.get_vcap_data()["application_name"].replace("-", "")
+APPD_TIER = util.get_vcap_data()["application_name"]
 
 APPD_DEFAULT_ENV_VARS = {
         "APPDYNAMICS_AGENT_APPLICATION_NAME": util.get_app_from_domain(),
