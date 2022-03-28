@@ -74,7 +74,7 @@ def update_config(m2ee, app_name):
     if not appdynamics_used():
         return
     logging.info("Adding app dynamics")
-    _set_default_env(m2ee)
+
     util.upsert_javaopts(
         m2ee,
         [
@@ -89,17 +89,7 @@ def update_config(m2ee, app_name):
         ],
     )
 
-    APPDYNAMICS_AGENT_NODE_NAME = "APPDYNAMICS_AGENT_NODE_NAME"
-    if os.getenv(APPDYNAMICS_AGENT_NODE_NAME):
-        util.upsert_custom_environment_variable(
-            m2ee,
-            APPDYNAMICS_AGENT_NODE_NAME,
-            "%s-%s"
-            % (
-                os.getenv(APPDYNAMICS_AGENT_NODE_NAME),
-                os.getenv("CF_INSTANCE_INDEX", "0"),
-            ),
-        )
+    _set_default_env(m2ee)
 
 
 def run():
