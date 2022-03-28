@@ -17,7 +17,7 @@ APPD_TIER = util.get_vcap_data()["application_name"]
 APPD_DEFAULT_ENV_VARS = {
         "APPDYNAMICS_AGENT_APPLICATION_NAME": util.get_app_from_domain(),
         "APPDYNAMICS_AGENT_NODE_NAME": f"node_{APPD_NODE_NUMBER}",
-        "APPDYNAMICS_AGENT_TIER_NAME": "simple_tier",
+        "APPDYNAMICS_AGENT_TIER_NAME": APPD_TIER,
         "APPDYNAMICS_CONTROLLER_PORT": "443",
         "APPDYNAMICS_CONTROLLER_SSL_ENABLED": "true",
     }
@@ -107,8 +107,8 @@ def run():
         return
 
     logging.info("Starting the appDynamics Machine agent...")
+    os.environ.update(APPD_DEFAULT_ENV_VARS)
     env_dict = dict(os.environ)
-    env_dict.update(APPD_DEFAULT_ENV_VARS)
     subprocess.Popen(
         (AGENT_PATH, "-Dmetric.http.listener=true"),
         env=env_dict,
