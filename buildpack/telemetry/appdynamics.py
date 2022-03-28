@@ -42,6 +42,7 @@ APPD_DEFAULT_ENV_VARS = {
 def _set_default_env(m2ee):
     for var_name, value in APPD_DEFAULT_ENV_VARS.items():
         util.upsert_custom_environment_variable(m2ee, var_name, value)
+        os.environ[var_name] = value
 
 
 def stage(buildpack_dir, destination_path, cache_path):
@@ -97,7 +98,6 @@ def run():
         return
 
     logging.info("Starting the appDynamics Machine agent...")
-    os.environ.update(APPD_DEFAULT_ENV_VARS)
     env_dict = dict(os.environ)
     subprocess.Popen(
         (AGENT_PATH, "-Dmetric.http.listener=true"),
