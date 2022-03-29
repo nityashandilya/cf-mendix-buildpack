@@ -17,7 +17,7 @@ from buildpack.core import runtime
 from buildpack.infrastructure import database
 from jinja2 import Template
 
-from . import datadog, metrics, mx_java_agent
+from . import datadog, metrics, mx_java_agent, appdynamics
 
 VERSION = "1.16.3"
 NAMESPACE = "telegraf"
@@ -62,8 +62,10 @@ def include_db_metrics():
         return False
 
     result = False
-    if metrics.get_appmetrics_target() is not None or datadog.is_enabled():
-        # For customers who have Datadog or APPMETRICS_TARGET enabled,
+    is_appmetrics = metrics.get_appmetrics_target() is not None
+    appd_enabled = appdynamics.machine_agent_enabled()
+    if is_appmetrics or datadog.is_enabled() or appd_enabled:
+        # For customers who have Datadog or AppDynamics or APPMETRICS_TARGET enabled,
         # we always include the database metrics. They can opt out
         # using the APPMETRICS_INCLUDE_DB flag
         result = strtobool(os.getenv("APPMETRICS_INCLUDE_DB", "true"))
@@ -186,6 +188,7 @@ def update_config(m2ee, app_name):
         micrometer_metrics=metrics.micrometer_metrics_enabled(runtime_version),
         cf_instance_index=_get_app_index(),
         app_name=app_name,
+        appdynamics_enabled=appdynamics.machine_agent_enabled(),
     )
 
     logging.debug("Writing Telegraf configuration file...")
