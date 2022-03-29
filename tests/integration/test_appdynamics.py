@@ -16,6 +16,7 @@ class TestCaseDeployWithAppdynamics(basetest.BaseTest):
                 "APPDYNAMICS_CONTROLLER_HOST_NAME": "test.mendix.com",
                 "APPDYNAMICS_CONTROLLER_PORT": 443,
                 "APPDYNAMICS_CONTROLLER_SSL_ENABLED": "true",
+                "APPDYNAMICS_MACHINE_AGENT_ENABLED": "true",
             },
         )
         self.start_container()
@@ -35,6 +36,15 @@ class TestCaseDeployWithAppdynamics(basetest.BaseTest):
             "Started AppDynamics Java Agent Successfully"
         )
 
+    def _test_machine_agent(self, mda_file):
+        self._deploy_app(mda_file)
+        self.assert_app_running()
+
+        # check if machine agent is running
+        output = self.run_on_container("ps -ef | grep machineagent")
+        assert output is not None
+        assert str(output).find("Dmetric.http.listener=true") >= 0
+
     def test_appdynamics_mx9(self):
         self._test_appdynamics("BuildpackTestApp-mx9-7.mda")
 
@@ -46,3 +56,15 @@ class TestCaseDeployWithAppdynamics(basetest.BaseTest):
 
     def test_appdynamics_mx6(self):
         self._test_appdynamics("sample-6.2.0.mda")
+
+    def test_machine_agent_mx9(self):
+        self._test_machine_agent("BuildpackTestApp-mx9-7.mda")
+
+    def test_machine_agent_mx8(self):
+        self._test_machine_agent("Mendix8.1.1.58432_StarterApp.mda")
+
+    def test_machine_agent_mx7(self):
+        self._test_machine_agent("BuildpackTestApp-mx-7-16.mda")
+
+    def test_machine_agent_mx6(self):
+        self._test_machine_agent("sample-6.2.0.mda")
