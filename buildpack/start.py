@@ -178,6 +178,7 @@ if __name__ == "__main__":
         logs.run(m2ee)
         runtime.run(m2ee, logs.get_loglevels())
         metrics.run(m2ee)
+        appdynamics.run()
         nginx.run()
 
         # Wait for the runtime to be ready before starting Databroker
