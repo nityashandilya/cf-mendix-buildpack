@@ -170,9 +170,11 @@ def configure_metrics_registry(m2ee):
 
     paidapps_registries = {"Metrics.Registries": [INFLUX_REGISTRY]}
 
-    appd_enabled = appdynamics.machine_agent_enabled()
-
-    if datadog.is_enabled() or get_appmetrics_target() or appd_enabled:
+    if (
+        datadog.is_enabled()
+        or get_appmetrics_target()
+        or appdynamics.machine_agent_enabled()
+    ):
         paidapps_registries["Metrics.Registries"].append(STATSD_REGISTRY)
 
     return paidapps_registries

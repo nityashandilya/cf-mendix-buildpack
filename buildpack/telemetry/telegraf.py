@@ -30,9 +30,16 @@ CONFIG_FILE_DIR = os.path.join(
 )
 CONFIG_FILE_PATH = os.path.join(CONFIG_FILE_DIR, "telegraf.conf")
 TEMPLATE_FILENAME = "telegraf.toml.j2"
+
+APPDYNAMICS_OUTPUT_SCRIPT_PATH = os.path.join(
+    os.getcwd(),
+    "buildpack",
+    "telemetry",
+    "appdynamics_telegraf_output.py",
+)
+
 STATSD_PORT = 8125
 STATSD_PORT_ALT = 18125
-
 
 # APPMETRICS_TARGET is a variable which includes JSON (single or array) with the following values:
 # - url: complete url of the endpoint. Mandatory.
@@ -63,8 +70,12 @@ def include_db_metrics():
 
     result = False
     is_appmetrics = metrics.get_appmetrics_target() is not None
-    appd_enabled = appdynamics.machine_agent_enabled()
-    if is_appmetrics or datadog.is_enabled() or appd_enabled:
+
+    if (
+        is_appmetrics
+        or datadog.is_enabled()
+        or appdynamics.machine_agent_enabled()
+    ):
         # For customers who have Datadog or AppDynamics or APPMETRICS_TARGET enabled,
         # we always include the database metrics. They can opt out
         # using the APPMETRICS_INCLUDE_DB flag
@@ -188,7 +199,9 @@ def update_config(m2ee, app_name):
         micrometer_metrics=metrics.micrometer_metrics_enabled(runtime_version),
         cf_instance_index=_get_app_index(),
         app_name=app_name,
+        # For Telegraf config only AppDynamics Machine Agent makes sense.
         appdynamics_enabled=appdynamics.machine_agent_enabled(),
+        appdynamics_output_script_path=APPDYNAMICS_OUTPUT_SCRIPT_PATH,
     )
 
     logging.debug("Writing Telegraf configuration file...")

@@ -385,8 +385,8 @@ To enable New Relic, simply bind a New Relic service to this app and settings wi
 
 ### AppDynamics
 
-All the information collected with AppDynamics Java Agent and Machine Agent is pushed to Controller and displayed on the 
-AppDynamics WEB interface.
+All the information collected with AppDynamics Java Agent and Machine Agent is pushed to Controller and displayed 
+on the [Controller UI](https://docs.appdynamics.com/21.1/en/appdynamics-essentials/getting-started/controller-ui-overview).
 
 #### Basic functionality
 
@@ -410,20 +410,23 @@ Please note that AppDynamics requires Mendix 6.2 or higher.
 
 \* The `APPDYNAMICS_AGENT_NODE_NAME` environment variable will be appended with the value of the `CF_INSTANCE_ID` variable. If you use `mynode` for `APPDYNAMICS_AGENT_NODE_NAME` , the AppDynamics agent will be configured as `mynode-0` for instance `0` and `mynode-1` for instance `1` , etc.
 
-For more details about nodes and tiers: [Tiers and Nodes](https://docs.appdynamics.com/22.2/en/application-monitoring/tiers-and-nodes).
+For more details about nodes and tiers: [Tiers and Nodes](https://docs.appdynamics.com/22.1/en/application-monitoring/tiers-and-nodes).
 
-If you have all the environment variables specified above, the AppDynamics Java Agent will be configured for your application. Current JAVA Agent version: `22.1.0.33445`. After configuring these environment variables, restage your app for the agent to be enabled.
+If you have all the environment variables specified above, the AppDynamics Java Agent will be configured for your application. 
+After configuring these environment variables, restart your app for the agent to be enabled.
+If the agent has not been installed it is necessary to redeploy the app.
 
 #### Extended functionality
 
 The Mendix App metrics collected by the Telegraf Agent also can be pushed to AppDynamics Controller.
-These metrics are pushed to [Machine Agent HTTP Listener](https://docs.appdynamics.com/22.2/en/infrastructure-visibility/machine-agent/extensions-and-custom-metrics/machine-agent-http-listener).
+These metrics are pushed to [Machine Agent HTTP Listener](https://docs.appdynamics.com/22.1/en/infrastructure-visibility/machine-agent/extensions-and-custom-metrics/machine-agent-http-listener).
 
 To activate the Machine Agent provide following environment variable:
 
 `APPDYNAMICS_MACHINE_AGENT_ENABLED: true`
 
-After the variable is set up the application should be restaged.
+After the variable is set up the application should be restarted.
+If the Machine Agent has not been installed it is necessary to redeploy the app.
 
 Please note, that this variable is custom feature flag for the buildpack. It cannot be found in AppDynamics documentation.
 From the perspective of AppDynamics the Mendix App metrics are considered as a 'Custom Metrics'. So to observe 
