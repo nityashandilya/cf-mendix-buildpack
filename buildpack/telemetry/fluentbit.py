@@ -6,7 +6,9 @@ from buildpack import util
 
 NAMESPACE = "fluentbit"
 FLUENTBIT_VERSION = "1.9.1"
-FLUENTBIT_ARCHIVE_NAME = "fluent-bit-{}-build.tar.gz".format(FLUENTBIT_VERSION)
+FLUENTBIT_ARCHIVE_NAME = "fluent-bit-{}-compiled.tar.gz".format(
+    FLUENTBIT_VERSION
+)
 
 
 def stage(buildpack_dir, destination_path, cache_path):
